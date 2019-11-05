@@ -1,0 +1,74 @@
+.heading{
+    display:flex;
+    justify-content: space-around;
+    background-color:#252F40;
+}
+
+.App-header{
+    padding:20px;
+    color:white;
+}
+
+.App-header a{
+    color:white;
+    /* padding: 0 5px; */
+    text-decoration: unset;
+    padding: 10px;
+    font-size:20px;
+}
+
+.App-header a:hover{
+    font-weight:bold;
+    color:#946010;
+}
+
+.App-title{
+    color:white;
+    
+}
+.filter{
+    display:flex;
+    justify-content:center;
+}
+
+.car-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:30px;
+    border:2px solid #252F40;
+    background:#252F40;
+}
+
+.car-card{
+    width:20%;
+    border :1px solid grey;
+    /* box-shadow:5px 5px 5px 1px grey; */
+    text-align:center;
+    margin:15px;
+    color:white;    
+}
+
+.car-image{
+    width:80%;
+}
+
+.label{
+    margin-top:30px;
+}
+#duration{
+    margin-top:30px;
+    width:100px;
+    margin-right:20px;
+}
+#distance{
+    margin-top:30px;
+    width:100px;
+}
+
+.total{
+    font-weight: bold;
+    color:#FEA902;
+}
+
+/*# sourceMappingURL=/src.f69400ca.css.map */
