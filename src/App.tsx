@@ -4,9 +4,9 @@ import AllCars from './AllCars';
 
 const App = () => (
   <div>
-  <MyNavBar/>
-  <AllCars/>
-</div>
+      <MyNavBar/>
+      <AllCars/>
+  </div>
 );
 
 export default App;

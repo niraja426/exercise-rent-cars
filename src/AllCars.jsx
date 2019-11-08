@@ -1,8 +1,19 @@
-import React, { useState } from "react"
-import Cars from "../server/cars.json"
+import React, { useState,useEffect } from "react"
+import TotalPrice from './TotalPrice'
+import axios from 'axios'
 
 function AllCars() {
-    const [allCars, setAllCars] = useState(Cars);
+    const[allCars,setAllCars]=useState([]);
+    useEffect(() => {
+        axios
+          .get("/cars.json")
+          .then(res => {
+              console.log(res.data)
+                setAllCars(res.data);
+          })
+          .catch(err => console.log(err));
+      }, []);
+
     const [duration, setDuration] = useState("1");
     const [distance, setDistance] = useState("50")
 
@@ -14,13 +25,6 @@ function AllCars() {
     function handleDistance(e) {
         e.preventDefault();
         setDistance(e.target.value);
-    }
-
-    function totalPrice(duration,priceperday,distance, priceperdistance){
-        if(duration<=1) return((duration*priceperday) + (distance*priceperdistance))
-        else if (duration<=4) return(((duration*priceperday*0.9) + (distance*priceperdistance)))
-        else if (duration<=10) return(((duration*priceperday*0.7) + (distance*priceperdistance)))
-        else return(((duration*priceperday*0.5) + (distance*priceperdistance)))
     }
 
 
@@ -51,31 +55,30 @@ function AllCars() {
             </div>
 
             <div className="car-container">
+
                 {allCars.filter((car, j) => {
-                    return ((parseInt(duration, 10) <= car.availability.maxDuration)
-                        &&
-                        (parseInt(distance, 10) <= car.availability.maxDistance)
-                    )
-                }).map((c, i) => {
-                    let path = `/pictures/${i + 1}.jpg`;
-                  
-                    return (
-                        <div className="car-card" key={i}>
-                            <h1>{c.brand}</h1>
-                            <img className="car-image" src={path} alt="image not found" />
-                            <p><strong>Model:</strong> {c.model}</p>
-                            <p>Price Per Day:$ 
+                    let intDuration=parseInt(duration,10)
+                    let intDistance=parseInt(distance, 10)
+                    return ((intDuration <= car.availability.maxDuration) &&
+                           (intDistance <= car.availability.maxDistance))
+                    })
+                    .map((c, i) => {
+                         return (
+                           <div className="car-card" key={i}>
+                                  <h1>{c.brand}</h1>
+                                  <img className="car-image" src={c.picturePath} alt="image not found" />
+                                  <p><strong>Model:</strong> {c.model}</p>
+                                  <p>Price Per Day:$ 
                                     {(duration <= 1) && c.pricePerDay ||
                                     (duration > 1 && duration <= 4) && <><strike>{c.pricePerDay}</strike> ${0.9 * c.pricePerDay}</>
                                      ||
                                     (duration > 4 && duration < 10) && <><strike>{c.pricePerDay}</strike> ${0.7 * c.pricePerDay} </>||
                                     (duration >= 10) && <><strike>{c.pricePerDay}</strike> ${0.5 * c.pricePerDay}   </>}
-                            </p>
-                            <p>Price per KM: ${c.pricePerKm}</p>
-                            <p className="total">TOTAL RENTAL PRICE: $ {totalPrice(duration,c.pricePerDay,distance,c.pricePerKm)}</p>
-                        </div>
-                    )
-                })}
+                                  </p>
+                                  <p>Price per KM: ${c.pricePerKm}</p>
+                                  <p className="total">TOTAL RENTAL PRICE: $ <TotalPrice duration={duration} priceperday={c.pricePerDay} distance={distance} priceperdistance={c.pricePerKm}/> </p>
+                            </div>)
+                })} 
             </div>
         </div>
     )
